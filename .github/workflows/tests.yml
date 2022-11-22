@@ -1,6 +1,6 @@
 name: Tests
 
-on: [ push, pull_request ]
+on: [ push ]
 
 jobs:
   test:
@@ -8,10 +8,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: [ 7.4, 8.0, 8.1 ]
-        composer-dependency: [ prefer-stable, prefer-lowest ]
+        php: [ "7.4", "8.0", "8.1" ]
 
-    name: "PHP ${{ matrix.php }} - ${{ matrix.composer-dependency }}"
+    name: "PHP ${{ matrix.php }}"
 
     runs-on: ubuntu-latest
 
@@ -26,7 +25,7 @@ jobs:
           coverage: none
 
       - name: Install dependencies
-        run: composer update --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist --${{ matrix.composer-dependency }}
+        run: composer update --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist --prefer-stable
 
       - name: Execute tests
         run: vendor/bin/phpunit
